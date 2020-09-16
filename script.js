@@ -22,12 +22,15 @@ var circle = L.circle ([lat,lon],{
 	radius: 1500
 }).addTo(mymap);
 
-
-
 const move = () => {
 	fetch('http://api.open-notify.org/iss-now.json').then(res=>res.json())
 	.then(geo=>{lat=geo.iss_position.latitude;lon=geo.iss_position.longitude;})
-	setTimeout(function () {mymap.panTo([lat,lon]);marker.setLatLng([lat,lon]);circle.setLatLng([lat,lon]);i++;if (i>0){
+	let latlongs = [
+	[lat,lon],
+	[lat+1,lon+1],
+	[lat+2,lon+2]]
+	let line = L.polyline(latlongs,{color:'green'}).addTo(mymap);	
+	setTimeout(function () {mymap.panTo([lat,lon]);marker.setLatLng([lat,lon]);circle.setLatLng([lat,lon]);line;i++;if (i>0){
 		move()
 	}},5000)
 }
